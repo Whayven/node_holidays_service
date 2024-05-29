@@ -28,7 +28,6 @@ router.get("/holidays", async (req, res) => {
       "Content-Disposition",
       `attachment; filename=holidays_${countryCode ?? "AT"}.csv`
     );
-    console.log(res);
 
     res.send(csvString);
   } catch (error) {
