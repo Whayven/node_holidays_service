@@ -1,4 +1,4 @@
-import { Holiday } from "@/types/nager";
+import { type Holiday } from "../types/nager";
 
 const apiBaseUrl = "https://date.nager.at/api/v3";
 const defaultCountryCode = "AT";

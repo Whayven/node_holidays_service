@@ -1,19 +1,20 @@
-import { takeInput } from "./util/input";
-import { generateHolidaysCsv } from "./util/csv";
-import { fetchAvailableCountries } from "./api/holidays";
-
 // Path: src/index.ts
+import express from "express";
 
-const main = async () => {
-  const command = await takeInput();
-  if (command === "list") {
-    const countries = await fetchAvailableCountries();
-    console.log(JSON.stringify(countries, null, 2));
-    return;
-  } else {
-    await generateHolidaysCsv(command);
-  }
-  console.log("CSV file generated");
-};
+import holidays from "./routes/holidays";
+import countries from "./routes/countries";
 
-main();
+const app = express();
+const port = 5000;
+
+app.get("/", async (_req, res) => {
+  res.json({ status: "ok" });
+});
+
+app.use("/api", holidays);
+
+app.use("/api", countries);
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});

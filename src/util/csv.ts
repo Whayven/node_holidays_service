@@ -1,37 +1,28 @@
-import { fetchHolidays } from "../api/holidays";
-import fs from "fs";
+import { fetchHolidays } from "../services/holidays";
 import { daysUntil, isWeekend } from "./helpers";
 
-const createCsvFile = ({ keys, data }: { keys: string[]; data: any[] }) => {
-  const writeStream = fs.createWriteStream("data.csv");
-  writeStream.write(keys.join(","));
-  writeStream.write("\n");
-  data.forEach((item) => {
-    writeStream.write(item.join(","));
-    writeStream.write("\n");
-  });
-  return writeStream.end();
-};
+const generateHolidaysCsv = async (countryCode?: string) => {
+  const keys = ["Name", "Date", "Days Until", "Weekend"];
 
-export const generateHolidaysCsv = async (countryCode?: string) => {
   try {
     const data = await fetchHolidays(countryCode);
 
-    const keys = ["Name", "Date", "Days Until", "Weekend"];
-    const values = data.map((item) => {
-      console.log(item);
+    if (!data.length) {
+      return null;
+    }
 
+    let csvString = keys.join(",") + "\n";
+
+    for (const item of data) {
       const date = new Date(item.date);
-      return [
-        item.name.replace(/,/g, ""),
-        item.date,
-        daysUntil(date) ?? "",
-        isWeekend(date) ? "Yes" : "No",
-      ];
-    });
-
-    return createCsvFile({ keys, data: values });
+      csvString += `${item.name.replace(/,/g, "")},${item.date},${
+        daysUntil(date) ?? ""
+      },${isWeekend(date) ? "Yes" : "No"}\n`;
+    }
+    return csvString;
   } catch (error) {
     console.error(error);
   }
 };
+
+export { generateHolidaysCsv };
