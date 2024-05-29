@@ -1,0 +1,19 @@
+{
+  "name": "node_holidays_service",
+  "version": "1.0.0",
+  "description": "Fetch holidays for countries",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "main": "ts-node src/index.ts"
+  },
+  "author": "Wayne F",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
